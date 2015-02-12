@@ -3,6 +3,8 @@ package jkor.testing_knowledge.entities;
 import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name="question")
 public class Question extends BaseEntity
 {
     @Column(name="text")
@@ -17,7 +19,7 @@ public class Question extends BaseEntity
     private Topic topic;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
-    private Set<Question> answers;
+    private Set<Answer> answers;
 
     public String getText() {
         return text;
@@ -51,11 +53,11 @@ public class Question extends BaseEntity
         return this;
     }
 
-    public Set<Question> getAnswers() {
+    public Set<Answer> getAnswers() {
         return answers;
     }
 
-    public Question setAnswers(Set<Question> answers) {
+    public Question setAnswers(Set<Answer> answers) {
         this.answers = answers;
         return this;
     }

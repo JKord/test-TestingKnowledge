@@ -1,11 +1,12 @@
 package jkor.testing_knowledge.entities;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
-@Entity
-public class BaseEntity
+@MappedSuperclass
+public abstract class BaseEntity implements Serializable
 {
     @Id
     @GeneratedValue

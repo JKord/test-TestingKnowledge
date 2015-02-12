@@ -1,10 +1,9 @@
 package jkor.testing_knowledge.entities;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@Entity
+@Table(name="answer")
 public class Answer extends BaseEntity
 {
     @Column(name="text")
