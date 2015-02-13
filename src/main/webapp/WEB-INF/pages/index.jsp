@@ -1,4 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="row">
 	<h1>Оберіть тест</h1>
@@ -6,11 +7,8 @@
 		<s:param name="id" value=""></s:param>
 	</s:url>
 	<div class="list-group">
-		<a href="${testingLink}1" class="list-group-item">Тест 1</a>
-		<a href="${testingLink}2" class="list-group-item">Тест 2</a>
-		<a href="${testingLink}3" class="list-group-item">Тест 3</a>
-		<a href="${testingLink}4" class="list-group-item">Тест 4</a>
-		<a href="${testingLink}5" class="list-group-item">Тест 5</a>
-		<a href="${testingLink}6" class="list-group-item">Тест 6</a>
+	  <c:forEach var="topic" items="${topics}" varStatus="status">
+		<a href="${testingLink}${topic.id}" class="list-group-item">${topic.name}</a>
+	  </c:forEach>
 	</div>
 </div>

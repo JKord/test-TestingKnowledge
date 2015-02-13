@@ -1,6 +1,7 @@
 package jkor.testing_knowledge.entities;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table(name="answer")
@@ -29,5 +30,10 @@ public class Answer extends BaseEntity
     public Answer setQuestion(Question question) {
         this.question = question;
         return this;
+    }
+
+    public Map<String, Object> responseObj()
+    {
+        return null;
     }
 }

@@ -1,6 +1,8 @@
 package jkor.testing_knowledge.entities;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -29,5 +31,10 @@ public class Topic extends BaseEntity
     public Topic setQuestions(Set<Question> questions) {
         this.questions = questions;
         return this;
+    }
+
+    public Map<String, Object> responseObj()
+    {
+        return null;
     }
 }

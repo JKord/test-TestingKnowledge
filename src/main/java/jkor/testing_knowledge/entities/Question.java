@@ -1,7 +1,7 @@
 package jkor.testing_knowledge.entities;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="question")
@@ -10,15 +10,15 @@ public class Question extends BaseEntity
     @Column(name="text")
     private String text;
 
-    @ElementCollection
+    //@ElementCollection
     @Column(name="correct_answer_ids")
-    private Set<Integer> correctAnswerIds;
+    private String correctAnswerIds;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
     private Set<Answer> answers;
 
     public String getText() {
@@ -30,18 +30,19 @@ public class Question extends BaseEntity
         return this;
     }
 
-    public Set<Integer> getCorrectAnswerIds() {
+    public String getCorrectAnswerIds() {
         return correctAnswerIds;
     }
 
-    public Question setCorrectAnswerIds(Set<Integer> correctAnswerIds) {
+    public Question setCorrectAnswerIds(String correctAnswerIds) {
         this.correctAnswerIds = correctAnswerIds;
         return this;
     }
 
     public boolean isCorrectAnswer(int id)
     {
-        return correctAnswerIds.contains(id);
+        //return correctAnswerIds.contains(id);
+        return true;
     }
 
     public Topic getTopic() {
@@ -60,5 +61,23 @@ public class Question extends BaseEntity
     public Question setAnswers(Set<Answer> answers) {
         this.answers = answers;
         return this;
+    }
+    
+    public Map<String, Object> responseObj()
+    {
+        Map<String, Object> obj = new HashMap<String, Object>();
+        List<Map<String, Object>> answersList = new ArrayList<Map<String, Object>>();
+        
+        for (Answer answer : answers) {
+            Map<String, Object> ans = new  HashMap<String, Object>();
+            ans.put("id", answer.getId());
+            ans.put("text", answer.getText());
+            answersList.add(ans);
+        }
+
+        obj.put("text", text);          
+        obj.put("answers", answersList);
+
+        return obj;        
     }
 }

@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.util.Map;
 
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable
@@ -22,4 +23,6 @@ public abstract class BaseEntity implements Serializable
         this.id = id;
         return this;
     }
+    
+    public abstract Map<String, Object> responseObj();
 }
