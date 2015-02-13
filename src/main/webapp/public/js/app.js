@@ -1,5 +1,5 @@
 var App = {
-    questionNumber: 1,
+    test: null,
 
     init: function (callback) {
         if (callback !== undefined) {
@@ -7,19 +7,51 @@ var App = {
         }
     },
 
+    initTesting: function () {
+        this.test = {
+            questionNumber: 1,
+            topicId: null,
+            timeLeft: 30,
+            questionBl: $('#question'),
+            answersBl: $('#possible_answers'),
+            infoTimeLeft: $('#info_timeLeft'),
+            infCorrectAnswers: $('#info_correctAnswers'),
+            infoPoints: $('#info_points'),
+            timeLeftTimer: null
+        };
+
+        this.test.infoTimeLeft.html(this.test.timeLeft + ' сек.');
+        this.test.infCorrectAnswers.html(0);
+        this.test.infoPoints.html(0);
+    },
+
     today: function () {
         var date = new Date();
         return date.getDay() + '-' + date.getMonth() + '-' + date.getYear();
     },
 
-    loadQuestion: function (topicId, questionId) {
-        var questionBl = $('#question'), answersBl = $('#possible_answers');
-        questionBl.html('...');
-        answersBl.html('<h3>Отримання даних...</h3>');
-        $.get('/testing/'+topicId+'/question/'+questionId, function(data){
+    timerTesting: function() {
+        App.test.timeLeft = 30;
+        App.test.infoTimeLeft.text(App.test.timeLeft + ' сек.');
+        clearInterval(this.test.timeLeftTimer);
+        this.test.timeLeftTimer = setInterval(function() {
+            App.test.infoTimeLeft.text(--App.test.timeLeft + ' сек.');
+            if(App.test.timeLeft < 1) {
+                clearInterval(App.test.timeLeftTimer);
+                alert('Час на відповідь закінчився. Перейти до наступного питання.');
+                App.loadQuestion();
+            }
+        }, 1000);
+    },
+
+    loadQuestion: function () {
+        this.test.questionBl.html('...');
+        this.test.answersBl.html('<h3>Отримання даних...</h3>');
+        $.get('/testing/'+this.test.topicId+'/question/'+ this.test.questionNumber, function(data){
             if (data.code == 1) {
-                questionBl.html(data.data.question.text);
-                answersBl.html(getPossibleAnswers(data.data.question.answers));
+                App.test.questionBl.html(data.data.question.text);
+                App.test.answersBl.html(getPossibleAnswers(data.data.question.answers));
+                App.timerTesting();
             } else {
                 MessageApp.show(data);
             }
@@ -27,8 +59,13 @@ var App = {
     },
 
     bindQuestion: function (topicId) {
-        App.loadQuestion(topicId, App.questionNumber);
-        
+        this.test.topicId = topicId;
+        this.loadQuestion();
+        this.test.answersBl.on('click', 'a', function() {
+            var id = $(this).data('id');
+            App.test.questionNumber++;
+            App.loadQuestion(topicId);
+        });
     }
 }
 

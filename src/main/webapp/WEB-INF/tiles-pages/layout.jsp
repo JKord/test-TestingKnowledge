@@ -13,6 +13,12 @@
   <link href="<s:url value="/public/css/" />bootstrap.min.css" rel="stylesheet"type="text/css" />
   <link href="<s:url value="/public/css/" />main.css" rel="stylesheet"type="text/css" />
   
+  <script src="<s:url value="/public/js/" />jquery.min.js"></script>
+  <script src="<s:url value="/public/js/" />jquery.form.min.js"></script>
+  <script src="<s:url value="/public/js/" />bootstrap.min.js"></script>
+  <script src="<s:url value="/public/js/" />functions.js"></script>
+  <script src="<s:url value="/public/js/" />app.js"></script>
+  
   <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
@@ -42,11 +48,5 @@
     <li><a href="#" title="Scroll to top"><i class="glyphicon glyphicon-chevron-up"></i></a></li>
   </ul>
   <div id="mask"></div>
-
-  <script src="<s:url value="/public/js/" />jquery.min.js"></script>
-  <script src="<s:url value="/public/js/" />jquery.form.min.js"></script>
-  <script src="<s:url value="/public/js/" />bootstrap.min.js"></script>
-  <script src="<s:url value="/public/js/" />functions.js"></script>
-  <script src="<s:url value="/public/js/" />app.js"></script>
 </body>
 </html>
