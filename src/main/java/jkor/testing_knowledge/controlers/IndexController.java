@@ -1,17 +1,46 @@
 package jkor.testing_knowledge.controlers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
+import jkor.testing_knowledge.services.STopic;
 
 @Controller
-public class IndexController
+public class IndexController extends BaseController
 {
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model)
+    @Autowired
+    STopic sTopic;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index(HttpServletRequest request)
     {
-        model.addAttribute("message", "Wiiii!");
-        return "hello";
+        request.getSession().removeAttribute("infoTesting");
+        
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("topics", sTopic.listTopic());
+        
+        return mv;
+    }
+
+    @RequestMapping(value = "/result", method = RequestMethod.GET)
+    public ModelAndView result(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        if(info == null)
+            return new ModelAndView("redirect:/");
+        session.removeAttribute("infoTesting");
+
+        ModelAndView mv = new ModelAndView("result");
+        mv.addObject("info", info);
+
+        return mv;
     }
 }
