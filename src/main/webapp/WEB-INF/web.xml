@@ -26,12 +26,17 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-	</servlet>
+	</servlet>	
 
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type >
+		<location>/error</location>
+	</error-page>
 
 	<jsp-config>
 		<jsp-property-group>

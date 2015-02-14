@@ -7,17 +7,17 @@ var App = {
         }
     },
 
-    initTesting: function () {
+    initTesting: function (questionNumber) {
         this.test = {
-            questionNumber: 1,
+            questionNumber: (questionNumber == undefined)? 1 : questionNumber,
             topicId: null,
             timeLeft: 30,
+            timeLeftTimer: null,
             questionBl: $('#question'),
             answersBl: $('#possible_answers'),
             infoTimeLeft: $('#info_timeLeft'),
             infCorrectAnswers: $('#info_correctAnswers'),
-            infoPoints: $('#info_points'),
-            timeLeftTimer: null
+            infoPoints: $('#info_points')
         };
 
         this.test.infoTimeLeft.html(this.test.timeLeft + ' сек.');
@@ -48,7 +48,7 @@ var App = {
         clearInterval(this.test.timeLeftTimer);
         App.test.infoTimeLeft.text('-');
         App.test.questionBl.text('Тест завершено');
-        App.test.answersBl.html('<a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
+        App.test.answersBl.html('<a href="/result" type="button" class="btn btn-success">Результат</a><br><a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
     },
 
     loadQuestion: function () {

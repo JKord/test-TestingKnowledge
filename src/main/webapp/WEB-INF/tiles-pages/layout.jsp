@@ -14,7 +14,6 @@
   <link href="<s:url value="/public/css/" />main.css" rel="stylesheet"type="text/css" />
   
   <script src="<s:url value="/public/js/" />jquery.min.js"></script>
-  <script src="<s:url value="/public/js/" />jquery.form.min.js"></script>
   <script src="<s:url value="/public/js/" />bootstrap.min.js"></script>
   <script src="<s:url value="/public/js/" />functions.js"></script>
   <script src="<s:url value="/public/js/" />app.js"></script>

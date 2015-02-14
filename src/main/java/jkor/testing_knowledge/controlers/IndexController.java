@@ -28,8 +28,10 @@ public class IndexController
     STesting sTesting;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView index()
+    public ModelAndView index(HttpServletRequest request)
     {
+        request.getSession().removeAttribute("infoTesting");
+        
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("topics", topicDAO.listTopic());
         
@@ -42,10 +44,17 @@ public class IndexController
         Topic topic = topicDAO.getById(id);
         if(topic == null)
             throw new ResourceNotFoundException();
+        HttpSession session = request.getSession();
 
-        request.getSession().setAttribute("infoTesting", sTesting.getStarInfo());
+        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        if(info == null)
+            session.setAttribute("infoTesting", sTesting.getStarInfo());
+        else
+            info.put("questionNumber", info.get("questionNumber") + 1);
+        
         ModelAndView mv = new ModelAndView("testing");
         mv.addObject("topic", topic);
+        mv.addObject("infoTesting", info);
 
         return mv;
     }
@@ -80,16 +89,14 @@ public class IndexController
 
         if(questions.size() < questionNumber || questionNumber < 1)
             return ResponseModel.create(0);
-        if(questions.size() == questionNumber) {           
+        if(questions.size() == questionNumber)       
             return ResponseModel.create(2);
-        }
-        questionNumber--;
+        
         Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
-        sTesting.checking(questions.get(questionNumber), answerId, info);
+        sTesting.checking(questions.get(--questionNumber), answerId, questionNumber, info);
 
         return ResponseModel.create(1, info);
     }
-
 
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     public ModelAndView result(HttpServletRequest request)

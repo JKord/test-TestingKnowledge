@@ -12,7 +12,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-		App.initTesting();
+		App.initTesting(${infoTesting.questionNumber} + 1);
 		App.bindQuestion(${topic.id});
 	});
 </script>
