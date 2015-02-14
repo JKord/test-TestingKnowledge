@@ -10,10 +10,10 @@ import jkor.testing_knowledge.entities.Question;
 @Service
 public class STesting
 {
-    final int TIME_INTERVAL = 30;
-    final int POINT = 8;
+    private final int TIME_INTERVAL = 30;
+    private final int POINT = 8;
 
-    public int getUnixtime()
+    int getUnixtime()
     {
         Date now = new Date();
         Long longTime = new Long(now.getTime() / 1000L);
@@ -21,7 +21,7 @@ public class STesting
         return longTime.intValue();
     }
     
-    public Map<String, Integer> getStarInfo()
+    public Map<String, Integer> getStartInfo()
     {
         Map<String, Integer> info = new HashMap<String, Integer>();
         info.put("correctAnswers", 0);
@@ -32,7 +32,7 @@ public class STesting
         return info;        
     }
     
-    public void checking(Question question, int answerId, int questionNumber, Map<String, Integer> info)
+    public void check(Question question, int answerId, int questionNumber, Map<String, Integer> info)
     {
         if(question.isCorrectAnswer(answerId) && (info.get("time") + TIME_INTERVAL) > getUnixtime() &&
            info.get("questionNumber").equals(questionNumber)

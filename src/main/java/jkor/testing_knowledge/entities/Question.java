@@ -18,7 +18,7 @@ public class Question extends BaseEntity
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
     private Set<Answer> answers;
 
     public String getText() {
@@ -27,6 +27,15 @@ public class Question extends BaseEntity
 
     public Question setText(String text) {
         this.text = text;
+        return this;
+    }
+
+    public String getCorrectAnswerIds() {
+        return correctAnswerIds;
+    }
+
+    public Question setCorrectAnswerIds(String correctAnswerIds) {
+        this.correctAnswerIds = correctAnswerIds;
         return this;
     }
 

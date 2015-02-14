@@ -1,4 +1,4 @@
-package jkor.testing_knowledge.entities.dao;
+package jkor.testing_knowledge.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

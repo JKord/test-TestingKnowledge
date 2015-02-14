@@ -7,9 +7,9 @@ var App = {
         }
     },
 
-    initTesting: function (questionNumber) {
+    initTesting: function (questionNumber, correctAnswers, points) {
         this.test = {
-            questionNumber: (questionNumber == undefined)? 1 : questionNumber,
+            questionNumber: questionNumber,
             topicId: null,
             timeLeft: 30,
             timeLeftTimer: null,
@@ -21,8 +21,8 @@ var App = {
         };
 
         this.test.infoTimeLeft.html(this.test.timeLeft + ' сек.');
-        this.test.infCorrectAnswers.html(0);
-        this.test.infoPoints.html(0);
+        this.test.infCorrectAnswers.html(correctAnswers);
+        this.test.infoPoints.html(points);
     },
 
     today: function () {
@@ -38,6 +38,7 @@ var App = {
             App.test.infoTimeLeft.text(--App.test.timeLeft + ' сек.');
             if(App.test.timeLeft < 1) {
                 clearInterval(App.test.timeLeftTimer);
+                App.test.questionNumber++;
                 alert('Час на відповідь закінчився. Перейти до наступного питання.');
                 App.loadQuestion();
             }
@@ -89,13 +90,13 @@ var App = {
             App.loadQuestion(topicId);
         });
     }
-}
+};
 
 var MessageApp = {
     show: function(msg){
         alert(msg.message);
     }
-}
+};
 
 $(document).ready(function () {
 

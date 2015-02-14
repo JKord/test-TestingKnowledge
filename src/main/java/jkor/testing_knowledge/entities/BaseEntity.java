@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable
+public abstract class BaseEntity
 {
     @Id
     @GeneratedValue

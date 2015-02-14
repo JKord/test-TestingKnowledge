@@ -11,9 +11,9 @@ public class ResponseModel
     public String message;
     public Object data;
     
-    public ResponseModel(int _code)
+    public ResponseModel(int code)
     {
-        code = _code;
+        this.code = code;
         switch (code) {
             case 0:  message = "Помилка"; break;
             case 1:  message = "OK"; break;
