@@ -17,7 +17,8 @@ public class ResponseModel
         switch (code) {
             case 0:  message = "Помилка"; break;
             case 1:  message = "OK"; break;
-        }        
+            case 2:  message = "Тест пройдено"; break;
+        }
     }
     
     public static ResponseModel create(int code, Object obj)

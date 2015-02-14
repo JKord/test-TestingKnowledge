@@ -43,6 +43,13 @@ var App = {
             }
         }, 1000);
     },
+    
+    finishTesting: function(data) {
+        clearInterval(this.test.timeLeftTimer);
+        App.test.infoTimeLeft.text('-');
+        App.test.questionBl.text('Тест завершено');
+        App.test.answersBl.html('<a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
+    },
 
     loadQuestion: function () {
         this.test.questionBl.html('...');
@@ -52,8 +59,23 @@ var App = {
                 App.test.questionBl.html(data.data.question.text);
                 App.test.answersBl.html(getPossibleAnswers(data.data.question.answers));
                 App.timerTesting();
+            } else if (data.code == 2) {
+                App.finishTesting(data);
             } else {
                 MessageApp.show(data);
+            }
+        });
+    },
+
+    checkingAnswer: function(answerId) {
+        $.ajax({ type: "POST", url: '/testing/'+this.test.topicId+'/question/'+ this.test.questionNumber,
+            dataType: 'json', data: { answerId: answerId }, success: function(data){
+                if (data.code == 1) {
+                    App.test.infCorrectAnswers.html(data.data.correctAnswers);
+                    App.test.infoPoints.html(data.data.points);
+                } else {
+                    MessageApp.show(data);
+                }
             }
         });
     },
@@ -61,8 +83,8 @@ var App = {
     bindQuestion: function (topicId) {
         this.test.topicId = topicId;
         this.loadQuestion();
-        this.test.answersBl.on('click', 'a', function() {
-            var id = $(this).data('id');
+        this.test.answersBl.on('click', 'a[data-id]', function() {
+            App.checkingAnswer($(this).data('id'));
             App.test.questionNumber++;
             App.loadQuestion(topicId);
         });

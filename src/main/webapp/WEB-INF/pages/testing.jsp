@@ -7,7 +7,7 @@
 			Думайте добре, і не довго.
 		</p>
 	</div>
-	<h1 id="question">Запитання 1</h1>
+	<h1 id="question">...</h1>
 	<div class="list-group" id="possible_answers"></div>
 </div>
 <script type="text/javascript">

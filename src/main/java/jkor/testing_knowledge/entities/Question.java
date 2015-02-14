@@ -30,19 +30,13 @@ public class Question extends BaseEntity
         return this;
     }
 
-    public String getCorrectAnswerIds() {
-        return correctAnswerIds;
-    }
-
-    public Question setCorrectAnswerIds(String correctAnswerIds) {
-        this.correctAnswerIds = correctAnswerIds;
-        return this;
-    }
-
     public boolean isCorrectAnswer(int id)
     {
-        //return correctAnswerIds.contains(id);
-        return true;
+        String[] answerIds = correctAnswerIds.split(",");
+        for (String aid : answerIds)
+            if (String.valueOf(id).equals(aid))
+                return true;
+        return false;
     }
 
     public Topic getTopic() {
