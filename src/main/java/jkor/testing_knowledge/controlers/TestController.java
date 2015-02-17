@@ -46,7 +46,7 @@ public class TestController
         return mv;
     }
 
-    private ResponseModel checkQuestion(List<Question> questions, int questionNumber)
+    private ResponseModel validateQuestionNumber(List<Question> questions, int questionNumber)
     {
         if(questions.size() < questionNumber || questionNumber < 0)
             return ResponseModel.create(0);
@@ -56,16 +56,23 @@ public class TestController
         return null;
     }
 
-    @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
+    private Topic getTopic(long topicId)
     {
         Topic topic = sTopic.getById(topicId);
         if(topic == null)
             throw new ResourceNotFoundException();
+
+        return  topic;
+    }
+
+    @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
+    {
+        Topic topic = getTopic(topicId);
         List<Question> questions = topic.getQuestions();
 
         questionNumber--;
-        ResponseModel response = checkQuestion(questions, questionNumber);
+        ResponseModel response = validateQuestionNumber(questions, questionNumber);
         if(response != null)
             return response;
 
@@ -77,14 +84,12 @@ public class TestController
                                                       @PathVariable long topicId, @PathVariable int questionNumber,
                                                       @RequestParam("answerId") int answerId)
     {
-        Topic topic = sTopic.getById(topicId);
-        if(topic == null)
-            throw new ResourceNotFoundException();
+        Topic topic = getTopic(topicId); 
         List<Question> questions = topic.getQuestions();
         HttpSession session = request.getSession();
 
         questionNumber--;
-        ResponseModel response = checkQuestion(questions, questionNumber);
+        ResponseModel response = validateQuestionNumber(questions, questionNumber);
         if(response != null)
             return response;
 
