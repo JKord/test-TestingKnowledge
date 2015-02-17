@@ -84,7 +84,7 @@ public class TestController
                                                       @PathVariable long topicId, @PathVariable int questionNumber,
                                                       @RequestParam("answerId") int answerId)
     {
-        Topic topic = getTopic(topicId); 
+        Topic topic = getTopic(topicId);
         List<Question> questions = topic.getQuestions();
         HttpSession session = request.getSession();
 

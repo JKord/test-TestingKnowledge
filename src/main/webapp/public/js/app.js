@@ -20,7 +20,7 @@ var App = {
             infoPoints: $('#info_points')
         };
 
-        this.test.infoTimeLeft.html(this.test.timeLeft + ' сек.');
+        this.test.infoTimeLeft.html(this.test.timeLeft + Local.sec);
         this.test.infCorrectAnswers.html(correctAnswers);
         this.test.infoPoints.html(points);
     },
@@ -32,15 +32,15 @@ var App = {
 
     timerTesting: function() {
         this.test.timeLeft = 30;
-        this.test.infoTimeLeft.text(this.test.timeLeft + ' сек.');
+        this.test.infoTimeLeft.text(this.test.timeLeft + Local.sec);
         clearInterval(this.test.timeLeftTimer);
         var self = this;
         this.test.timeLeftTimer = setInterval(function() {
-            self.test.infoTimeLeft.text(--self.test.timeLeft + ' сек.');
+            self.test.infoTimeLeft.text(--self.test.timeLeft + Local.sec);
             if(self.test.timeLeft < 1) {
                 clearInterval(self.test.timeLeftTimer);
                 self.test.questionNumber++;
-                alert('Час на відповідь закінчився. Перейти до наступного питання.');
+                alert(Local.timeEnd);
                 self.loadQuestion();
             }
         }, 1000);
@@ -49,13 +49,13 @@ var App = {
     finishTesting: function(data) {
         clearInterval(this.test.timeLeftTimer);
         this.test.infoTimeLeft.text('-');
-        this.test.questionBl.text('Тест завершено');
-        this.test.answersBl.html('<a href="/result" type="button" class="btn btn-success">Результат</a><br><a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
+        this.test.questionBl.text(Local.testEnd);
+        this.test.answersBl.html('<a href="/result" type="button" class="btn btn-success">'+Local.btn.result+'</a><br><a href="/" type="button" class="btn btn-primary">'+Local.btn.mainPage+'</a>');
     },
 
     loadQuestion: function () {
         this.test.questionBl.html('...');
-        this.test.answersBl.html('<h3>Отримання даних...</h3>');
+        this.test.answersBl.html('<h3>' + Local.receiveData + '</h3>');
         var self = this;
         $.get('/testing/'+this.test.topicId+'/question/'+ this.test.questionNumber, function(data){
             if (data.code == 1) {

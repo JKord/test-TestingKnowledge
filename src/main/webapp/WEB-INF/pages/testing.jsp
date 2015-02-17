@@ -1,10 +1,12 @@
+<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+
 <div class="row">
 	<div class="alert alert-success" role="alert">
-		<h4>Тест ${topic.name}</h4>
+		<h4><s:message code="test" /> ${topic.name}</h4>
 		<p id="info_blTest">
-			Часу залишилося на відповідь <code id="info_timeLeft">30 сек.</code>
-			Правильних відповідей <code id="info_correctAnswers">0</code>, Балів: <code id="info_points">0</code>.
-			Думайте добре, і не довго.
+            <s:message code="testing.p.timeLeft" /> <code id="info_timeLeft">30 <s:message code="sec" /></code>
+            <s:message code="testing.p.correctAnswers" /> <code id="info_correctAnswers">0</code>, <s:message code="points" />: <code id="points">0</code>.
+            <s:message code="testing.p.think" />
 		</p>
 	</div>
 	<h1 id="question">...</h1>

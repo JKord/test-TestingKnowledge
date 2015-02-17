@@ -15,6 +15,7 @@
   
   <script src="<s:url value="/public/js/" />jquery.min.js"></script>
   <script src="<s:url value="/public/js/" />bootstrap.min.js"></script>
+  <script src="<s:url value="/public/js/localization/" />${pageContext.response.locale}.js"></script>
   <script src="<s:url value="/public/js/" />app.js"></script>
   
   <!--[if lt IE 9]>
