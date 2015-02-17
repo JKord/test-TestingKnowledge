@@ -16,10 +16,10 @@ import jkor.testing_knowledge.entities.Question;
 @ContextConfiguration(locations = {
         "file:src/main/webapp/WEB-INF/spring/root-context.xml",
         "file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
-public class STestingTest extends AbstractTransactionalJUnit4SpringContextTests
+public class TestingServiceTest extends AbstractTransactionalJUnit4SpringContextTests
 {
     @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired private STesting sTesting;
+    @Autowired private TestingService sTesting;
 
     public Map<String, Integer> getNewInfo()
     {

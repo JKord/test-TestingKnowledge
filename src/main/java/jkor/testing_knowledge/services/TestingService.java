@@ -1,6 +1,5 @@
 package jkor.testing_knowledge.services;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
@@ -8,21 +7,16 @@ import org.springframework.stereotype.Service;
 import jkor.testing_knowledge.entities.Question;
 
 @Service
-public class STesting
+public class TestingService
 {
     private final int TIME_INTERVAL = 30;
     private final int POINT = 8;
 
-    int getUnixtime()
-    {
-        Date now = new Date();
-        Long longTime = new Long(now.getTime() / 1000L);
-        
-        return longTime.intValue();
+    int getUnixtime() {
+        return new Long(new Date().getTime() / 1000L).intValue();
     }
     
-    public Map<String, Integer> getStartInfo()
-    {
+    public Map<String, Integer> getStartInfo() {
         Map<String, Integer> info = new HashMap<String, Integer>();
         info.put("correctAnswers", 0);
         info.put("points", 0);

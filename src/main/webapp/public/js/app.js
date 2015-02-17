@@ -31,37 +31,39 @@ var App = {
     },
 
     timerTesting: function() {
-        App.test.timeLeft = 30;
-        App.test.infoTimeLeft.text(App.test.timeLeft + ' сек.');
+        this.test.timeLeft = 30;
+        this.test.infoTimeLeft.text(this.test.timeLeft + ' сек.');
         clearInterval(this.test.timeLeftTimer);
+        var self = this;
         this.test.timeLeftTimer = setInterval(function() {
-            App.test.infoTimeLeft.text(--App.test.timeLeft + ' сек.');
-            if(App.test.timeLeft < 1) {
-                clearInterval(App.test.timeLeftTimer);
-                App.test.questionNumber++;
+            self.test.infoTimeLeft.text(--self.test.timeLeft + ' сек.');
+            if(self.test.timeLeft < 1) {
+                clearInterval(self.test.timeLeftTimer);
+                self.test.questionNumber++;
                 alert('Час на відповідь закінчився. Перейти до наступного питання.');
-                App.loadQuestion();
+                self.loadQuestion();
             }
         }, 1000);
     },
     
     finishTesting: function(data) {
         clearInterval(this.test.timeLeftTimer);
-        App.test.infoTimeLeft.text('-');
-        App.test.questionBl.text('Тест завершено');
-        App.test.answersBl.html('<a href="/result" type="button" class="btn btn-success">Результат</a><br><a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
+        this.test.infoTimeLeft.text('-');
+        this.test.questionBl.text('Тест завершено');
+        this.test.answersBl.html('<a href="/result" type="button" class="btn btn-success">Результат</a><br><a href="/" type="button" class="btn btn-primary">На головну сторінку</a>');
     },
 
     loadQuestion: function () {
         this.test.questionBl.html('...');
         this.test.answersBl.html('<h3>Отримання даних...</h3>');
+        var self = this;
         $.get('/testing/'+this.test.topicId+'/question/'+ this.test.questionNumber, function(data){
             if (data.code == 1) {
-                App.test.questionBl.html(data.data.question.text);
-                App.test.answersBl.html(getPossibleAnswers(data.data.question.answers));
-                App.timerTesting();
+                self.test.questionBl.html(data.data.question.text);
+                self.test.answersBl.html(self.getPossibleAnswers(data.data.question.answers));
+                self.timerTesting();
             } else if (data.code == 2) {
-                App.finishTesting(data);
+                self.finishTesting(data);
             } else {
                 MessageApp.show(data);
             }
@@ -69,11 +71,12 @@ var App = {
     },
 
     checkingAnswer: function(answerId) {
+        var self = this;
         $.ajax({ type: "POST", url: '/testing/'+this.test.topicId+'/question/'+ this.test.questionNumber,
             dataType: 'json', data: { answerId: answerId }, success: function(data){
                 if (data.code == 1) {
-                    App.test.infCorrectAnswers.html(data.data.correctAnswers);
-                    App.test.infoPoints.html(data.data.points);
+                    self.test.infCorrectAnswers.html(data.data.correctAnswers);
+                    self.test.infoPoints.html(data.data.points);
                 } else {
                     MessageApp.show(data);
                 }
@@ -84,11 +87,21 @@ var App = {
     bindQuestion: function (topicId) {
         this.test.topicId = topicId;
         this.loadQuestion();
+        var self = this;
         this.test.answersBl.on('click', 'a[data-id]', function() {
-            App.checkingAnswer($(this).data('id'));
-            App.test.questionNumber++;
-            App.loadQuestion(topicId);
+            self.checkingAnswer($(this).data('id'));
+            self.test.questionNumber++;
+            self.loadQuestion(topicId);
         });
+    },
+
+    getPossibleAnswers: function (answers) {
+        var html = '';
+        $.each(answers, function(key, answer) {
+            html += '<a href="#"'+key+' class="list-group-item list-group-item-success" data-id="'+answer.id+'">'+answer.text+'</a>'
+        });
+
+        return html;
     }
 };
 
@@ -97,7 +110,3 @@ var MessageApp = {
         alert(msg.message);
     }
 };
-
-$(document).ready(function () {
-
-});

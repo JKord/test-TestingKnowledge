@@ -10,13 +10,13 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import jkor.testing_knowledge.services.STopic;
+import jkor.testing_knowledge.services.TopicService;
 
 @Controller
-public class IndexController extends BaseController
+public class IndexController
 {
     @Autowired
-    STopic sTopic;
+    TopicService sTopic;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request)
@@ -42,5 +42,12 @@ public class IndexController extends BaseController
         mv.addObject("info", info);
 
         return mv;
+    }
+
+    @ExceptionHandler (Exception.class)
+    @ResponseStatus (HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody String handleDBConnectException(Exception ex)
+    {
+        return "Connection database exception";
     }
 }

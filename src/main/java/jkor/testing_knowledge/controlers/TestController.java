@@ -18,8 +18,10 @@ import jkor.testing_knowledge.services.*;
 @RequestMapping("/testing")
 public class TestController
 {
-    @Autowired STopic sTopic;
-    @Autowired STesting sTesting;
+    @Autowired
+    TopicService sTopic;
+    @Autowired
+    TestingService sTesting;
     
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView testing(HttpServletRequest request, @PathVariable long id)
@@ -42,6 +44,16 @@ public class TestController
         return mv;
     }
 
+    private ResponseModel checkQuestion(List<Question> questions, int questionNumber)
+    {
+        if(questions.size() < questionNumber || questionNumber < 0)
+            return ResponseModel.create(0);
+        if(questions.size() == questionNumber)
+            return ResponseModel.create(2);
+
+        return null;
+    }
+
     @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
@@ -52,10 +64,9 @@ public class TestController
         List<Question> questions = topic.getQuestions();
 
         questionNumber--;
-        if(questions.size() < questionNumber || questionNumber < 0)
-            return ResponseModel.create(0);
-        if(questions.size() == questionNumber)
-            return ResponseModel.create(2);
+        ResponseModel response = checkQuestion(questions, questionNumber);
+        if(response != null)
+            return response;
 
         return ResponseModel.create(1, "question", questions.get(questionNumber));
     }
@@ -72,10 +83,9 @@ public class TestController
         HttpSession session = request.getSession();
 
         questionNumber--;
-        if(questions.size() < questionNumber || questionNumber < 0)
-            return ResponseModel.create(0);
-        if(questions.size() == questionNumber)
-            return ResponseModel.create(2);
+        ResponseModel response = checkQuestion(questions, questionNumber);
+        if(response != null)
+            return response;
 
         Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
         sTesting.check(questions.get(questionNumber), answerId, questionNumber, info);
