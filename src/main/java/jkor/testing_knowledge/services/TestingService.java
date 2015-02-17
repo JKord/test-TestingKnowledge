@@ -1,10 +1,10 @@
 package jkor.testing_knowledge.services;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
+
 import org.springframework.stereotype.Service;
 import jkor.testing_knowledge.entities.Question;
+import jkor.testing_knowledge.model.InfoTestingModel;
 
 @Service
 public class TestingService
@@ -16,25 +16,22 @@ public class TestingService
         return new Long(new Date().getTime() / 1000L).intValue();
     }
     
-    public Map<String, Integer> getStartInfo() {
-        Map<String, Integer> info = new HashMap<String, Integer>();
-        info.put("correctAnswers", 0);
-        info.put("points", 0);
-        info.put("questionNumber", 0);
-        info.put("time", getUnixtime());
+    public InfoTestingModel getStartInfo() {
+        InfoTestingModel info = new InfoTestingModel();
+        info.setTime(getUnixtime());
 
         return info;        
     }
     
-    public void check(Question question, int answerId, int questionNumber, Map<String, Integer> info)
+    public void check(Question question, int answerId, int questionNumber, InfoTestingModel info)
     {
-        if(question.isCorrectAnswer(answerId) && (info.get("time") + TIME_INTERVAL) > getUnixtime() &&
-           info.get("questionNumber").equals(questionNumber)
+        if(question.isCorrectAnswer(answerId) && (info.getTime() + TIME_INTERVAL) > getUnixtime() &&
+           info.getQuestionNumber() == questionNumber
           ) {
-            info.put("correctAnswers", info.get("correctAnswers") + 1);
-            info.put("points", info.get("points") + POINT);
+            info.setCorrectAnswers(info.getCorrectAnswers() + 1);
+            info.setPoints( info.getPoints() + POINT);
         }
-        info.put("questionNumber", info.get("questionNumber") + 1);
-        info.put("time", getUnixtime());
+        info.setQuestionNumber(info.getQuestionNumber() + 1);
+        info.setTime(getUnixtime());
     }
 }

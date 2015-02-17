@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 import jkor.testing_knowledge.services.TopicService;
+import jkor.testing_knowledge.model.InfoTestingModel;
 
 @Controller
 public class IndexController
@@ -33,7 +32,7 @@ public class IndexController
     public ModelAndView result(HttpServletRequest request)
     {
         HttpSession session = request.getSession();
-        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        InfoTestingModel info = (InfoTestingModel) session.getAttribute("infoTesting");
         if(info == null)
             return new ModelAndView("redirect:/");
         session.removeAttribute("infoTesting");

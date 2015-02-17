@@ -1,5 +1,6 @@
 package jkor.testing_knowledge.services;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import java.util.*;
 import static org.junit.Assert.assertEquals;
 import jkor.testing_knowledge.entities.Question;
+import jkor.testing_knowledge.model.InfoTestingModel;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -21,21 +22,14 @@ public class TestingServiceTest extends AbstractTransactionalJUnit4SpringContext
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired private TestingService sTesting;
 
-    public Map<String, Integer> getNewInfo()
-    {
-        Map<String, Integer> info = new HashMap<String, Integer>();
-        info.put("correctAnswers", 1);
-        info.put("points", 8);
-        info.put("questionNumber", 1);
-        info.put("time", sTesting.getUnixtime());
-
-        return info;
+    public InfoTestingModel getNewInfo() {
+        return  new InfoTestingModel(1, 8, 1, sTesting.getUnixtime());
     }
 
     @Test
     public void testingCheck() throws Exception
     {
-        Map<String, Integer>
+        InfoTestingModel
                 info = sTesting.getStartInfo(),
                 newInfo = getNewInfo();
 

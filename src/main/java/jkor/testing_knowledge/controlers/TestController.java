@@ -7,12 +7,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 import jkor.testing_knowledge.exception.ResourceNotFoundException;
+import jkor.testing_knowledge.model.InfoTestingModel;
 import jkor.testing_knowledge.model.ResponseModel;
 import jkor.testing_knowledge.entities.*;
 import jkor.testing_knowledge.services.*;
+
 
 @Controller
 @RequestMapping("/testing")
@@ -31,11 +33,11 @@ public class TestController
             throw new ResourceNotFoundException();
         HttpSession session = request.getSession();
 
-        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        InfoTestingModel info = (InfoTestingModel) session.getAttribute("infoTesting");
         if(info == null)
             session.setAttribute("infoTesting", sTesting.getStartInfo());
         else
-            info.put("questionNumber", info.get("questionNumber") + 1);
+            info.setQuestionNumber(info.getQuestionNumber() + 1);
 
         ModelAndView mv = new ModelAndView("testing");
         mv.addObject("topic", topic);
@@ -55,8 +57,7 @@ public class TestController
     }
 
     @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
+    public @ResponseBody ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
     {
         Topic topic = sTopic.getById(topicId);
         if(topic == null)
@@ -87,7 +88,7 @@ public class TestController
         if(response != null)
             return response;
 
-        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        InfoTestingModel info = (InfoTestingModel) session.getAttribute("infoTesting");
         sTesting.check(questions.get(questionNumber), answerId, questionNumber, info);
 
         return ResponseModel.create(1, info);
