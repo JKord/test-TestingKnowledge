@@ -29,7 +29,7 @@ public class TestingService
            info.getQuestionNumber() == questionNumber
           ) {
             info.setCorrectAnswers(info.getCorrectAnswers() + 1);
-            info.setPoints( info.getPoints() + POINT);
+            info.setPoints(info.getPoints() + POINT);
         }
         info.setQuestionNumber(info.getQuestionNumber() + 1);
         info.setTime(getUnixtime());

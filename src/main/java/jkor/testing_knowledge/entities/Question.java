@@ -3,13 +3,12 @@ package jkor.testing_knowledge.entities;
 import javax.persistence.*;
 import java.util.*;
 
+import jkor.testing_knowledge.entities.trans.QuestionTrans;
+
 @Entity
 @Table(name="question")
-public class Question extends BaseEntity
+public class Question extends BaseEntity<QuestionTrans>
 {
-    @Column(name="text")
-    private String text;
-
     //@ElementCollection
     @Column(name="correct_answer_ids")
     private String correctAnswerIds;
@@ -22,11 +21,11 @@ public class Question extends BaseEntity
     private Set<Answer> answers;
 
     public String getText() {
-        return text;
+        return trans.get(getLocale()).getText();
     }
 
     public Question setText(String text) {
-        this.text = text;
+        trans.get(getLocale()).setText(text);
         return this;
     }
 
@@ -78,7 +77,7 @@ public class Question extends BaseEntity
             answersList.add(ans);
         }
 
-        obj.put("text", text);          
+        obj.put("text", getText());
         obj.put("answers", answersList);
 
         return obj;        

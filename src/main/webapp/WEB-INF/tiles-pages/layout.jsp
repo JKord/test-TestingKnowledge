@@ -27,12 +27,16 @@
     <header class="masthead">
       <div id="nav" class="navbar navbar-custom navbar-inverse navbar-static-top" >
         <div class="container">
-          <div class="navbar-header">
-            <%--<a class="navbar-brand" id="brand" href="/" title=""><img src="/public/img/logo.png" alt="logo" class="logoIc"/></a>--%>
-          </div><!--/.nav-collapse -->
+          <div class="navbar-header"></div>
+          <nav class="collapse navbar-collapse bs-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/?lang=uk">UK</a></li>
+              <li><a href="/?lang=en">EN</a></li>
+            </ul>
+          </nav>
           <tiles:insertAttribute name="header" />
-        </div><!--/.container -->
-      </div><!--/.navbar -->
+        </div>
+      </div>
     </header>
     <div class="bg-5">
       <div class="container">

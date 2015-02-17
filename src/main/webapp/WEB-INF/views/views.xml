@@ -12,15 +12,15 @@
 
     <!-- pages -->
     <definition name="index" extends="base.definition">
-        <put-attribute name="title" value="Вітаємо в системі тестування знань" />
+        <put-attribute name="title" value="Testing Knowledge" />
         <put-attribute name="body" value="/WEB-INF/pages/index.jsp" />
     </definition>
     <definition name="testing" extends="base.definition">
-        <put-attribute name="title" value="Проходження тесту" />
+        <put-attribute name="title" value="Testing Knowledge" />
         <put-attribute name="body" value="/WEB-INF/pages/testing.jsp" />
     </definition>
     <definition name="result" extends="base.definition">
-        <put-attribute name="title" value="Результат тесту" />
+        <put-attribute name="title" value="Testing Knowledge" />
         <put-attribute name="body" value="/WEB-INF/pages/result.jsp" />
     </definition>
 </tiles-definitions>

@@ -45,6 +45,8 @@
         <property name="cookieMaxAge" value="604800"></property>
     </bean>
 
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" />
+
     <mvc:resources mapping="/public/**" location="/public/" />
     <mvc:annotation-driven />
     <tx:annotation-driven />
