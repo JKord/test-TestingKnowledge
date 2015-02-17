@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="row">
-	<h1>Оберіть тест</h1>
+	<h1><s:message code="index.label.title" /></h1>
 	<s:url value="/testing/{id}" var="testingLink" htmlEscape="true">
 		<s:param name="id" value=""></s:param>
 	</s:url>

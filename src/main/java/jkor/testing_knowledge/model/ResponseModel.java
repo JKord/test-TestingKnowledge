@@ -34,10 +34,10 @@ public class ResponseModel
         return create(code, null);
     }
 
-    public static ResponseModel create(int code, String nameValue, Object value)
+    public static ResponseModel create(int code, String nameValue, BaseEntity value)
     {
         Map<String, Object> obj = new HashMap<String, Object>() {};
-        obj.put(nameValue, ((BaseEntity) value).responseObj());
+        obj.put(nameValue, value.responseObj());
 
         return create(code, obj);
     }

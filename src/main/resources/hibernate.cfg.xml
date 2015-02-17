@@ -8,5 +8,8 @@
         <mapping class="jkor.testing_knowledge.entities.Answer" />
         <mapping class="jkor.testing_knowledge.entities.Question" />
         <mapping class="jkor.testing_knowledge.entities.Topic" />
+        <mapping class="jkor.testing_knowledge.entities.trans.AnswerTrans" />
+        <mapping class="jkor.testing_knowledge.entities.trans.TopicTrans" />
+        <mapping class="jkor.testing_knowledge.entities.trans.QuestionTrans" />
     </session-factory>
 </hibernate-configuration>

@@ -1,13 +1,14 @@
+<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <div class="row">
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title">Вітаємо, Ви пройшли тест!</h3>
+			<h3 class="panel-title"><s:message code="result.label.title" /></h3>
 		</div>
 		<div class="panel-body">
-			<p>Пройдено запитань ${info.questionNumber} з них правельних ${info.correctAnswers}.</p>
-			<p>Набрано балів: ${info.points}. Ви можете собою пишатися але не дуже сильно.</p>
+			<p><s:message code="result.p.info" arguments="${info.questionNumber},${info.correctAnswers}"/>
+			<p><s:message code="result.p.infoPoints" arguments="${info.points}"/>
 		</div>
 	</div>
-	<a href="/" type="button" class="btn btn-primary">На головну сторінку</a>
+	<a href="/" type="button" class="btn btn-primary"><s:message code="result.btn.indexPage" /></a>
 	<br><br>
 </div>

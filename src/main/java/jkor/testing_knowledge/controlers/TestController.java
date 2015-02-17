@@ -7,19 +7,23 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
 
 import jkor.testing_knowledge.exception.ResourceNotFoundException;
+import jkor.testing_knowledge.model.InfoTestingModel;
 import jkor.testing_knowledge.model.ResponseModel;
 import jkor.testing_knowledge.entities.*;
 import jkor.testing_knowledge.services.*;
+
 
 @Controller
 @RequestMapping("/testing")
 public class TestController
 {
-    @Autowired STopic sTopic;
-    @Autowired STesting sTesting;
+    @Autowired
+    TopicService sTopic;
+    @Autowired
+    TestingService sTesting;
     
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView testing(HttpServletRequest request, @PathVariable long id)
@@ -29,11 +33,11 @@ public class TestController
             throw new ResourceNotFoundException();
         HttpSession session = request.getSession();
 
-        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        InfoTestingModel info = (InfoTestingModel) session.getAttribute("infoTesting");
         if(info == null)
             session.setAttribute("infoTesting", sTesting.getStartInfo());
         else
-            info.put("questionNumber", info.get("questionNumber") + 1);
+            info.setQuestionNumber(info.getQuestionNumber() + 1);
 
         ModelAndView mv = new ModelAndView("testing");
         mv.addObject("topic", topic);
@@ -42,20 +46,35 @@ public class TestController
         return mv;
     }
 
-    @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
+    private ResponseModel validateQuestionNumber(List<Question> questions, int questionNumber)
     {
-        Topic topic = sTopic.getById(topicId);
-        if(topic == null)
-            throw new ResourceNotFoundException();
-        List<Question> questions = topic.getQuestions();
-
-        questionNumber--;
         if(questions.size() < questionNumber || questionNumber < 0)
             return ResponseModel.create(0);
         if(questions.size() == questionNumber)
             return ResponseModel.create(2);
+
+        return null;
+    }
+
+    private Topic getTopic(long topicId)
+    {
+        Topic topic = sTopic.getById(topicId);
+        if(topic == null)
+            throw new ResourceNotFoundException();
+
+        return  topic;
+    }
+
+    @RequestMapping(value = "/{topicId}/question/{questionNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseModel testing(@PathVariable long topicId, @PathVariable int questionNumber)
+    {
+        Topic topic = getTopic(topicId);
+        List<Question> questions = topic.getQuestions();
+
+        questionNumber--;
+        ResponseModel response = validateQuestionNumber(questions, questionNumber);
+        if(response != null)
+            return response;
 
         return ResponseModel.create(1, "question", questions.get(questionNumber));
     }
@@ -65,19 +84,16 @@ public class TestController
                                                       @PathVariable long topicId, @PathVariable int questionNumber,
                                                       @RequestParam("answerId") int answerId)
     {
-        Topic topic = sTopic.getById(topicId);
-        if(topic == null)
-            throw new ResourceNotFoundException();
+        Topic topic = getTopic(topicId);
         List<Question> questions = topic.getQuestions();
         HttpSession session = request.getSession();
 
         questionNumber--;
-        if(questions.size() < questionNumber || questionNumber < 0)
-            return ResponseModel.create(0);
-        if(questions.size() == questionNumber)
-            return ResponseModel.create(2);
+        ResponseModel response = validateQuestionNumber(questions, questionNumber);
+        if(response != null)
+            return response;
 
-        Map<String, Integer> info = (HashMap<String, Integer>) session.getAttribute("infoTesting");
+        InfoTestingModel info = (InfoTestingModel) session.getAttribute("infoTesting");
         sTesting.check(questions.get(questionNumber), answerId, questionNumber, info);
 
         return ResponseModel.create(1, info);

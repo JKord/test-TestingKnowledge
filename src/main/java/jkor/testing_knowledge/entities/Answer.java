@@ -3,9 +3,11 @@ package jkor.testing_knowledge.entities;
 import javax.persistence.*;
 import java.util.Map;
 
+import jkor.testing_knowledge.entities.trans.AnswerTrans;
+
 @Entity
 @Table(name="answer")
-public class Answer extends BaseEntity
+public class Answer extends BaseEntity<AnswerTrans>
 {
     @Column(name="text")
     private String text;
@@ -15,11 +17,18 @@ public class Answer extends BaseEntity
     private Question question;
 
     public String getText() {
+        if(text == null)
+            return trans.get(getLocale()).getText();
         return text;
     }
 
     public Answer setText(String text) {
         this.text = text;
+        return this;
+    }
+
+    public Answer setText(String codeLocale, String text) {
+        trans.get(codeLocale).setText(text);
         return this;
     }
 
